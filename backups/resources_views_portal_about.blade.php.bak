@@ -1,0 +1,16 @@
+@extends('layouts.portal')
+
+@section('title', '关于我们 · 波斯圈')
+
+@section('content')
+    <section class="page">
+        <h2>关于我们</h2>
+        <p>{{ config('portal.about.intro') }}</p>
+
+        <h3>我们的愿景</h3>
+        <p>{{ config('portal.about.vision') }}</p>
+
+        <h3>团队与文化</h3>
+        <p>{{ config('portal.about.team') }}</p>
+    </section>
+@endsection

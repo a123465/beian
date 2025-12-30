@@ -1,0 +1,15 @@
+@extends('layouts.portal')
+
+@section('title', '服务 · 波斯圈')
+
+@section('content')
+    <section class="page">
+        <h2>服务</h2>
+        <p>我们提供以下服务（可定制化）：</p>
+        <ul>
+            @foreach(config('portal.services', []) as $s)
+                <li><strong>{{ $s }}</strong></li>
+            @endforeach
+        </ul>
+    </section>
+@endsection
