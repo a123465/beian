@@ -49,10 +49,10 @@ return [
 
     // 联系信息
     'contact' => [
-        'phone' => '+86 0755-1234-5678',
-        'email_sales' => 'sales@example.com',
-        'email_support' => 'support@example.com',
-        'address' => '广东省深圳市（示例地址）',
+        'phone' => '+86 19168778773',
+        'email_sales' => '19168778773@163.com',
+        'email_support' => '19168778773@163.com',
+        'address' => '广东省深圳市',
     ],
 
     // 关于页面（简短描述、愿景等）
