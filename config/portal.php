@@ -26,7 +26,7 @@ return [
 
     // features 对应的小图（可选）
     'feature_images' => [
-        'https://images.unsplash.com/photo-1526378729704-3b9a7a7b4c6f?w=800&q=60&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800&q=60&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=60&auto=format&fit=crop',
     ],

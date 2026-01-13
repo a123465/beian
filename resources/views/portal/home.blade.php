@@ -39,8 +39,8 @@
             <div class="hero-right">
                 @php $heroImg = config('portal.hero_image'); @endphp
                 @if($heroImg)
-                    <div class="hero-visual"><img src="{{ $heroImg }}" alt="{{ config('portal.company_name') }}" width="390" height="299"/></div>
-                @else
+                <div class="hero-visual"><img src="{{ $heroImg }}" alt="{{ config('portal.company_name') }}" width="390" height="299"/></div>
+                            @else
                     <div class="hero-visual svg-fallback">
                         <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
                             <defs>
@@ -80,7 +80,7 @@
                         </div>
                         <h3>{{ $feat['title'] }}</h3>
                         <p>{{ $feat['desc'] }}</p>
-                        <p class="muted">了解更多 →</p>
+                        <p class="muted"><a class="link" href="{{ route('services') }}#{{ \Illuminate\Support\Str::slug($feat['title']) }}">了解更多 →</a></p>
                     </div>
                 </article>
             @endforeach
@@ -95,18 +95,27 @@
         </div>
 
         <div class="cases-grid">
-            @for($i=0;$i<4;$i++)
+                @php
+                $cases = [
+                    ['title' => '智慧园区管理平台', 'desc' => '面向园区运营方的租赁、能耗、访客与设备管理一体化解决方案。', 'img' => 'https://images.unsplash.com/photo-1495435229349-e86db7bfa013?w=1200&q=60&auto=format&fit=crop'],
+                    ['title' => '企业一体化 CRM', 'desc' => '为中大型企业打造的客户关系管理与销售自动化平台，支持多渠道接入与报表分析。', 'img' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=60&auto=format&fit=crop'],
+                    ['title' => '电商商家运营后台', 'desc' => '高并发下的订单、库存与促销管理后台，集成第三方支付与物流服务。', 'img' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=60&auto=format&fit=crop'],
+                    ['title' => '流程自动化与审批 OA', 'desc' => '轻量级企业级 OA 与流程引擎，支持定制表单与移动端审批。', 'img' => 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&q=60&auto=format&fit=crop'],
+                ];
+            @endphp
+
+            @foreach($cases as $case)
                 <article class="case-card">
                     <figure class="case-thumb">
-                        <img src="https://images.unsplash.com/photo-1495435229349-e86db7bfa013?w=1200&q=60&auto=format&fit=crop" alt="case {{ $i+1 }}" width="640" height="360"/>
+                        <img src="{{ $case['img'] }}" alt="{{ $case['title'] }}" width="640" height="360"/>
                     </figure>
                     <div class="case-body">
-                        <h4>项目名称示例 {{ $i+1 }}</h4>
-                        <p>为客户定制的软件与流程自动化，显著提升效率与用户体验。</p>
-                        <a class="link" href="#">查看详情 →</a>
+                        <h4>{{ $case['title'] }}</h4>
+                        <p>{{ $case['desc'] }}</p>
+                        <a class="link" href="{{ route('cases.show', ['slug' => \Illuminate\Support\Str::slug($case['title'])]) }}">查看详情 →</a>
                     </div>
                 </article>
-            @endfor
+            @endforeach
         </div>
     </section>
 
@@ -114,10 +123,18 @@
     <section class="section partners">
         <div class="container">
             <h3>合作伙伴</h3>
+            @php
+                $partners = [
+                    ['name' => '华为云'],
+                    ['name' => '阿里云'],
+                    ['name' => '腾讯云'],
+                ];
+            @endphp
+
             <div class="partners-row">
-                @for($i=0;$i<6;$i++)
-                    <div class="partner"><img src="https://images.unsplash.com/photo-1542744095-291d1f67b221?w=400&q=60&auto=format&fit=crop" alt="partner" width="120" height="60"/></div>
-                @endfor
+                @foreach($partners as $index => $p)
+                    <div class="partner"><img src="{{ asset('images/partner'.($index+1).'.svg') }}" alt="{{ $p['name'] }}" width="120" height="60"/></div>
+                @endforeach
             </div>
         </div>
     </section>
