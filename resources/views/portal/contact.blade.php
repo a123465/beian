@@ -27,12 +27,30 @@
 
             <div class="contact-card contact-form">
                 <h4>在线留言</h4>
-                <form action="#" method="post">
+
+                @if(session('success'))
+                    <div class="alert success">{{ session('success') }}</div>
+                @endif
+                @if(session('error'))
+                    <div class="alert error">{{ session('error') }}</div>
+                @endif
+
+                @if($errors->any())
+                    <div class="alert error">
+                        <ul>
+                            @foreach($errors->all() as $err)
+                                <li>{{ $err }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('contact.send') }}" method="post">
                     {{ csrf_field() }}
-                    <div class="form-row"><input type="text" name="name" placeholder="姓名" required></div>
-                    <div class="form-row"><input type="email" name="email" placeholder="邮箱" required></div>
-                    <div class="form-row"><input type="text" name="company" placeholder="公司（可选）"></div>
-                    <div class="form-row"><textarea name="message" rows="5" placeholder="请描述你的需求或问题"></textarea></div>
+                    <div class="form-row"><input type="text" name="name" placeholder="姓名" value="{{ old('name') }}" required></div>
+                    <div class="form-row"><input type="email" name="email" placeholder="邮箱" value="{{ old('email') }}" required></div>
+                    <div class="form-row"><input type="text" name="company" placeholder="公司（可选）" value="{{ old('company') }}"></div>
+                    <div class="form-row"><textarea name="message" rows="5" placeholder="请描述你的需求或问题">{{ old('message') }}</textarea></div>
                     <div class="form-row"><button class="btn primary" type="submit">发送消息</button></div>
                 </form>
             </div>

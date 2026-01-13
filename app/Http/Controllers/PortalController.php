@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use App\Mail\ContactMessage;
 use Illuminate\Support\Str;
 
 class PortalController extends Controller
@@ -37,6 +40,37 @@ class PortalController extends Controller
     public function contact()
     {
         return view('portal.contact');
+    }
+
+    /**
+     * Handle contact form submission and send email.
+     */
+    public function sendContact(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'company' => 'nullable|string|max:255',
+            'message' => 'nullable|string',
+        ]);
+
+        try {
+            $to = config('portal.contact.email_sales') ?: config('mail.from.address');
+            $cc = config('portal.contact.email_support');
+
+            $mail = new ContactMessage($data);
+
+            if ($cc) {
+                Mail::to($to)->cc($cc)->send($mail);
+            } else {
+                Mail::to($to)->send($mail);
+            }
+
+            return redirect()->route('contact')->with('success', '消息已发送，我们会尽快联系你。');
+        } catch (\Exception $e) {
+            Log::error('Contact form send failed: ' . $e->getMessage());
+            return redirect()->route('contact')->with('error', '发送失败，请稍后再试。');
+        }
     }
 
     /**
