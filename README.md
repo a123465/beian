@@ -57,3 +57,79 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## 邮件集成（Mailgun / SMTP）
+
+
+
+```
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.example.com
+MAIL_PORT=587
+MAIL_USERNAME=your_username
+MAIL_PASSWORD=your_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=hello@example.com
+MAIL_FROM_NAME="Your Company"
+```
+
+
+```
+MAIL_MAILER=mailgun
+MAILGUN_DOMAIN=mg.example.com
+MAILGUN_SECRET=key-xxxxxxxxxxxxxxxxxxxx
+MAILGUN_ENDPOINT=api.mailgun.net   # 可按需设置 region endpoint
+MAIL_FROM_ADDRESS=hello@example.com
+MAIL_FROM_NAME="Your Company"
+```
+
+ - 我已实现并注册 `mail:test` Artisan 命令（`php artisan mail:test`），用于按序测试 `mailgun,smtp,failover,log`。参见下面使用示例。
+	- 我已实现并注册 `mail:test` Artisan 命令（`php artisan mail:test`），用于按序测试 `mailgun,smtp,failover,log`。参见下面使用示例。
+
+使用示例：
+
+```powershell
+# 发送测试到默认收件人（portal.contact.email_support 或 mail.from.address）
+php artisan mail:test
+
+# 指定收件人
+php artisan mail:test --to=dev@example.test
+
+# 指定只测试特定 mailers（逗号分隔），例如只测试 mailgun 和 smtp
+php artisan mail:test --mailers=mailgun,smtp
+```
+	- 在 `config/services.php` 新增了 `mailgun` 配置读取（`MAILGUN_DOMAIN` / `MAILGUN_SECRET` / `MAILGUN_ENDPOINT`）。
+	- 在 `config/mail.php` 中添加了 `mailgun` mailer 节点，保留其它 mailer 配置（`smtp`, `log`, `sendmail` 等）。
+
+
+	- 本地开发推荐先使用 `MAIL_MAILER=log` 或 `array` 来避免实际发送。使用 `MAIL_MAILER=smtp` 时，可配合 MailHog、Mailtrap 等测试工具（将 `MAIL_HOST` 指向测试工具），示例如使用 MailHog：
+
+```powershell
+# 在 Windows 上启动 MailHog（如果已安装）并运行你的应用，或使用 Docker:
+docker run -p 1025:1025 -p 8025:8025 mailhog/mailhog
+
+# 然后在 .env 设置：
+MAIL_MAILER=smtp
+MAIL_HOST=127.0.0.1
+MAIL_PORT=1025
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_ENCRYPTION=
+```
+
+
+### 回退（Failover）策略
+
+
+```
+MAIL_MAILER=failover
+```
+
+
+
+```php
+Mail::mailer('failover')->to('ops@example.com')->send(new \App\Mail\ContactMessage($data));
+```
+
+
+如需我把 `.env.example` 中加入示例变量或添加一个小脚本测试邮件发送，我可以继续更新。请告诉我你偏好 Mailgun 还是 SMTP（或同时支持两者）。

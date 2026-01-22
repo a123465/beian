@@ -61,6 +61,15 @@ return [
             // ],
         ],
 
+        'mailgun' => [
+            'transport' => 'mailgun',
+            // Laravel will read Mailgun config from `config/services.php` by default.
+            // You can also provide domain/secret here via env if needed.
+            'domain' => env('MAILGUN_DOMAIN'),
+            'secret' => env('MAILGUN_SECRET'),
+            'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+        ],
+
         'resend' => [
             'transport' => 'resend',
         ],
@@ -81,7 +90,9 @@ return [
 
         'failover' => [
             'transport' => 'failover',
+            // 优先使用 Mailgun，失败后回退到 SMTP，最后使用 log 记录（不会实际发送）
             'mailers' => [
+                'mailgun',
                 'smtp',
                 'log',
             ],
